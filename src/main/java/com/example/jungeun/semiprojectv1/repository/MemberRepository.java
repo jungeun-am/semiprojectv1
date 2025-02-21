@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface MemberRepository {
 
-    @Insert("insert into members(userid, password, name, email) values(#{userid},#{passwd},#{name},#{email}) ")
+    @Insert("insert into members(userid, password, name, email) values(#{userid},#{password},#{name},#{email}) ")
     int insertMember(MemberDTO member);
 
 }
