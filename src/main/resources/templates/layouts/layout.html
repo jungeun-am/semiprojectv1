@@ -24,7 +24,7 @@
 <body>
     <!--웹 페이지 레이아웃(가운데 정렬)을 위한 태그들-->
     <div class="container">
-        <div class="content-wrapper mx-auto">
+        <div class="content-wrapper mx-auto"> <!--mx-auto :  해당 요소를 수평 중앙에 배치 -->
             <div th:replace="~{fragments/header::header}"></div>
             <div th:replace="~{fragments/nav::nav}"> </div>
             <th:block layout:fragment="content"></th:block>
