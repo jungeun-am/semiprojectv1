@@ -46,4 +46,36 @@
         </main>
     </th:block>
 
+    <th:block layout:fragment="script">
+        <script>
+            const joinfrm = document.querySelector('#joinfrm');
+
+            joinfrm.addEventListener("submit", (e) => {
+                e.preventDefault(); // submit 버튼 기능 중지
+
+                if (joinfrm.userid.value === '') {
+                    alert('아이디를 입력하세요 !!');
+                    return false; // submit 막기
+                } else if (joinfrm.passwd.value === '') {
+                    alert('비밀번호를 입력하세요 !!');
+                    return false; // submit 막기
+                }else if (joinfrm.name.value === '') {
+                    alert('이름을 입력하세요 !!');
+                    return false; // submit 막기
+
+                } else if (joinfrm.email.value === '') {
+                    alert('이메일 입력하세요 !!');
+                    return false; // submit 막기
+
+                } else if (joinfrm.passwd.value !== joinfrm.repasswd.value) {
+                    alert('비밀번호가 서로 일치하지 않습니다');
+                    return false; // submit 막기
+                }
+                joinfrm.submit(); // 회원정보를 정상적으로 작성했다면
+            });
+        </script>
+
+    </th:block>
+
+
 </html>
