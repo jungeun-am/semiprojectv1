@@ -3,14 +3,19 @@ package com.example.jungeun.semiprojectv1.domain;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data // setter, getter, toString 자동생성
 @Builder
-public class MemberDTO {
+public class Member {
 
+    private int mno;
     private String userid;
     private String password;
     private String repasswd;
     private String name;
     private String email;
+    private LocalDate regdate;
+
 
 }
