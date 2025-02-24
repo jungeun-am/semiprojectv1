@@ -14,9 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/member")
 @RequiredArgsConstructor // 생성자 주입
+/** 스프링 의존성 주입 방법
+생성자 주입 (추천!) - 주입받을 필드는 final로 선언, @RequiredArgsConstructor 애노테이션 필요
+setter 주입
+필드 주입*/
 public class MemberController {
 
-    private final MemberService memberService;
+    private final MemberService memberService; /*생성자 주입*/
 
     @GetMapping("/join")
     public String join() {
