@@ -45,5 +45,5 @@ const displayErrorMessages = (input, message) => {
     let error = document.createElement('div');
     error.className='error-message';
     error.textContent = message;
-    input[2].parentElement.appendChild(error);
+    input.parentElement.appendChild(error);
 }
