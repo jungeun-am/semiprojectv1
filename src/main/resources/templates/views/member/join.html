@@ -8,7 +8,7 @@
                 color: #dc3545;
                 font-size: 0.95em;
                 margin: 10px 0;
-                display: none;
+                /*display: none;*/
             }
             #joinfrm {
                 max-width: 450px;
@@ -28,35 +28,36 @@
                     <input type="text" name="userid" id="userid" class="form-control"
                            placeholder="아이디" required minlength="5" maxlength="18">
                     <label for="userid" class="form-label">아이디</label>
-                    <div id="useridError" class="error-message"></div>
+
                 </div>
 
                 <div class="form-floating my-2">
                     <input type="password" name="password" id="password" class="form-control"
                        placeholder="비밀번호"required minlength="6" maxlength="18">
                     <label for="password" class="form-label">비밀번호</label>
-                    <div id="passwordError" class="error-message"></div>
+
                 </div>
 
                 <div class="form-floating  my-2">
                 <input type="password" name="repasswd" id="repasswd" class="form-control"
                        placeholder="비밀번호 확인" required>
                     <label for="repasswd"class="form-label">비밀번호 확인</label>
-                    <div id="repasswdError" class="error-message"></div>
+
                 </div>
 
                 <div class="form-floating my-2" >
                  <input type="text" name="name" id="name" class="form-control"
                         placeholder="이름" required>
                  <label for="name" class="form-label">이름</label>
-                    <div id="nameError" class="error-message"></div>
+
                 </div>
 
                 <div class="form-floating my-2" >
                  <input type="email" name="email" id="email" class="form-control"
                         placeholder="이메일" required>
                  <label for="email" class="form-label">이메일</label>
-                    <div id="emailError" class="error-message"></div>
+
+
                 </div>
 
                 <div class="my-2 d-flex justify-content-center">
@@ -75,55 +76,20 @@
     </th:block>
 
     <th:block layout:fragment="script">
+        <script src="/js/member.js"></script>
         <script>
             const joinfrm = document.querySelector('#joinfrm');
-
-            const errorMessages = [
-                '아이디는 소문자로 시작하고, 영문자와 숫자만 사용 가능합니다 (최소 6자 ~ 최대 18자)',
-                '비밀번호는 영문 대소문자, 숫자, 특수문자를 포함해야 합니다 (최소 6자 ~ 최대 18자)',
-                '비밀번호가 일치하지 않습니다',
-                '이름은 한글 또는 영문자만 사용 가능합니다',
-                '올바른 이메일 형식이 아닙니다',
-                '자동가입방지를 확인하세요'];
-            const patterns = [
-                /^[a-z][a-z0-9]{5,17}$/,
-                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,18}$/,
-                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,18}$/,
-                /^[가-힣]{2,5}|[a-zA-Z]{2,10}$/,
-                /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/
-            ];
-
 
             joinfrm.addEventListener("submit", (e) => {
                 e.preventDefault(); // submit 버튼 기능 중지
 
-                let isValid = true;
-                // 모든 error-message 요소의 내용을 초기화
-                document.querySelectorAll(".error-message")
-                    .forEach(error => error.textContent='');
+                clearErrorsMessages();   // 에러메세지 초기화
 
-                // 회원가입 폼 안의 모든 input 요소 수집
-                const inputs = joinfrm.querySelectorAll('input');
-                inputs.forEach((input, idx )=> { // input 요소를 하나씩 검사
-                    if(!input.checkValidity()) { // html5 태그를 이용한 유효성 검사
-                        let error = document.getElementById(`${input.id}Error`); //에러메세지 요소 선택
-                        error.textContent = errorMessages[idx]; // 에러메세지 지정
-                        error.style.display = `block`; // 에러메시지 표시
-                        isValid = false;
-                    }
-                });
-                /*비밀번호 일치 여부 검사*/
-                if(inputs[1].value !== inputs[2].value){
-                    let error = document.getElementById('repasswdError');
-                    error.textContent = errorMessages[2];
-                    error.style.display = `block`;
-                    isValid = false;
-                }
+                // 입력 요소 유효성 검사
+                let isValid = validInputs(joinfrm)
+
                 if (isValid) joinfrm.submit(); // 회원정보를 정상적으로 작성했다면
             });
         </script>
-
     </th:block>
-
-
 </html>
