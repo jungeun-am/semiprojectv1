@@ -4,6 +4,7 @@ import com.example.jungeun.semiprojectv1.domain.MemberDTO;
 import com.example.jungeun.semiprojectv1.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.Mapping;
@@ -27,15 +28,19 @@ public class MemberController {
         return "views/member/join";
     }
 
+    // ResponseEntity는 스프링에서 HTTP와 관련된 기능을 구현할 때 사용
+    // 상태코드, HTTP 헤더/본문등을 명시적으로 설정 가능
     @PostMapping ("/join")
-    public String joinok(MemberDTO member) {
-        String returnPage = "redirect:/member/error";
+    public ResponseEntity<?> joinok(MemberDTO member) {
+
+        ResponseEntity<?> response= ResponseEntity.badRequest().build();
+
         log.info("submit된 회원 정보:{}", member);
 
         if (memberService.newMember(member))
-            returnPage = "redirect:/member/login";
+            response= ResponseEntity.ok().build();
 
-        return returnPage;
+        return response;
     }
 
     @GetMapping("/login")
