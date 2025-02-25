@@ -28,7 +28,7 @@ document.querySelectorAll(".error-message")
 
 // 입력 요소 유효성 검사
 const validInputs = (form) => {
-    let isValid = true;
+    let isValid = true;s
 
     // 회원가입 폼안의 input 요소 수집
     const inputs = form.querySelectorAll('input');

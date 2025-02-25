@@ -62,8 +62,14 @@ public class MemberController {
     }
 
     @GetMapping("/myinfo")
-    public String myinfo() {
-        return "views/member/myinfo";
+    public String myinfo(HttpSession session) {
+        String returnUrl = "views/member/login";
+
+        // 세션변수가 생성되어 있다면 myinfo로 이동가능
+        if (session.getAttribute("loginUser") != null) {
+            returnUrl = "views/member/myinfo";
+        }
+        return returnUrl ;
     }
 
     @PostMapping ("/login")

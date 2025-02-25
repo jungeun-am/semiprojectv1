@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data // setter, getter, toString 자동생성
 @Builder
@@ -14,7 +15,7 @@ public class Member {
     private String password;
     private String name;
     private String email;
-    private LocalDate regdate;
+    private LocalDateTime regdate;
 
 
 }
