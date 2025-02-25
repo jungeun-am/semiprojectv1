@@ -5,6 +5,12 @@ const errorMessages = [
     '이름은 한글 또는 영문자만 사용 가능합니다',
     '올바른 이메일 형식이 아닙니다',
     '자동가입방지를 확인하세요'];
+
+const loginMessages = [
+    '아이디를 올바르게 입력하세요',
+    '비밀번호를 올바르게 입력하세요',
+];
+
 const patterns = [ // patterns 사용시, 정규표현을 만들 수 있으나 코드가 복잡해질 수 있음
     /^[a-z][a-z0-9]{5,17}$/,
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,18}$/,
@@ -68,3 +74,80 @@ const hashPassword = async (passwd) => {
 
     return hashHex;
 }
+
+// submit vs fetch
+// 1) 폼 submit 방식: 페이지 새로고침 발생, 에러처리는 브라우저에 의존
+// 2) fetch 방식: 비동기 처리 가능, 에러처리는 세밀하게 조절 가능, 요청데이터를 JSON으로 전송 가능,
+// REST API/SPA/비동기에서 주로 사용
+
+// 프라미스 (Promise)
+// 자바스크립트에서 비동기 작업을 처리하기 위한 객체
+// 주로 비동기 작업의 성공/실패를 관리하고 결과를 처리하는데 사용
+// ES6에서 처음 도입 - 콜백 지옥 해결, 비동기 처리 코드를 깔끔하게 작성
+// asyn: 비동기 함수임을 선언 - 반환값은 promise
+// await: 비동기 함수의 처리가 완료될 때까지 기다렸다가 결과를 받아옴
+
+const submitJoinfrm = async (frm) => {
+    // Web Crypto API로 비밀번호 암호화
+    frm.password.value = await hashPassword(frm.password.value);
+    console.log(frm.password.value);
+    // 폼에 입력된 데이터를 formData 객체로 초기화
+    const formData = new FormData(frm);
+
+    fetch('/member/join',{
+        method:'POST',
+        body: formData
+    }).then(async response => {
+        if(response.ok) { // 회원가입이 정상적으로 처리되었다면
+            alert('회원가입이 완료되었습니다 ! ')
+            location.href = '/member/login';
+        } else if(response.status === 400) {
+            alert(await response.text());
+        } else {  // 회원가입이 정상적으로 실패했다면
+            alert('회원가입에 실패했습니다 !! 다시 시도해주세요!');
+        }
+    }).catch(error => {
+        console.error('join error:', error);
+        alert('서버와 통신 중 오류가 발생했습니다 ! 관리자에게 문의하세요!!');
+    });
+} // submitJoinFrm end
+
+// 로그인 폼 유효성 검사
+const validLogin = (form) => {
+    let isValid = true;
+
+    // 회원가입 폼안의 input 요소 수집
+    const inputs = form.querySelectorAll('input');
+    inputs.forEach((input, idx )=> { // input 요소를 하나씩 검사
+        if(!input.checkValidity()) { // html5 태그를 이용한 유효성 검사
+            displayErrorMessages(input, loginMessages[idx])
+            isValid = false;
+        }
+    });
+
+    return isValid;
+}
+
+// 로그인 폼 제출
+const submitLoginfrm = async (frm) => {
+    frm.password.value = await hashPassword(frm.password.value);
+    const formData = new FormData(frm);
+
+    fetch('/member/login',{
+        method:'POST',
+        body: formData
+    }).then(async response => {
+        if(response.ok) { // 로그인 성공 시,
+            alert('로그인이 완료되었습니다 ! ')
+            location.href = '/member/myinfo';
+        } else if(response.status === 400) {
+            alert(await response.text());
+        } else {  // 로그인 실패했다면
+            alert('로그인에 실패했습니다 !! 다시 시도해주세요!');
+        }
+    }).catch(error => {
+        console.error('login error:', error);
+        alert('서버와 통신 중 오류가 발생했습니다 ! 관리자에게 문의하세요!!');
+    });
+} // submitLoginFrm end
+
