@@ -30,10 +30,10 @@ jobs:
 
       # 패키지 배포 준비
       - name: prepare deploy
-        run:
+        run: |
           mkdir -p deploy
           cp target/*.jar deploy/application.jar
-          cp scripts/deploy.sh /deploy
+          cp scripts/deploy.sh /deploy/
           ls -al deploy
 
       # SSH로 EC2에 파일 전송 (/home/ubuntu/deploy)
